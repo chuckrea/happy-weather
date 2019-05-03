@@ -5,8 +5,7 @@ import HappyWeather from './HappyWeather';
 function App() {
   return (
     <div className="App">
-      <header>Happy Weather</header>
-      <HappyWeather></HappyWeather>
+      <HappyWeather />
     </div>
   );
 }

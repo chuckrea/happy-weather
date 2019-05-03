@@ -1,0 +1,35 @@
+.current-forecast {
+  display: flex;
+  justify-content: space-around;
+  min-height: 250px;
+  position: relative;
+  text-align: initial;
+}
+
+.current-forecast--icon-info {
+  display: flex;
+}
+
+.current-forecast--icon-info > div:first-of-type {
+  margin-right: 2em;
+}
+
+.current-forecast > div:not(:first-of-type) {
+  margin-left: 2rem;
+}
+
+.current-forecast--back-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  cursor: pointer;
+}
+
+.hourly-item {
+  display: flex;
+  align-items: center;
+}
+
+.hourly-item p {
+  margin: 0.5em;
+}

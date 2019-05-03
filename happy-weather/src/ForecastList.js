@@ -1,6 +1,8 @@
 import React from 'react';
 
-import ForecastCard from './ForecastCard.js';
+import './ForecastList.css';
+
+import ForecastListCard from './ForecastListCard';
 
 class ForecastList extends React.Component {
   constructor(props) {
@@ -10,9 +12,15 @@ class ForecastList extends React.Component {
   render() {
     const { forecasts } = this.props;
     const items = forecasts.map((forecast, index) => (
-      <ForecastCard key={index} />
+      <ForecastListCard
+        forecast={forecast}
+        key={index}
+        activeForecast={this.props.activeForecast}
+        displayFullForecast={this.props.displayFullForecast}
+      />
     ));
-    return <div>{items}</div>;
+
+    return <div className="forecasts">{items}</div>;
   }
 }
 

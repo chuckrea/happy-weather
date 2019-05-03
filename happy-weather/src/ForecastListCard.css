@@ -1,0 +1,13 @@
+.forecast-card {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  border: 1px solid;
+  margin: 0 0.5em;
+  padding: 1em;
+}
+
+.forecast-card.active {
+  background: #d7d7d7;
+  border-bottom-left-radius: 25%;
+}

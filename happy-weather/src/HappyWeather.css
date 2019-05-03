@@ -1,0 +1,12 @@
+.forecast-body {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.centered-flex-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
