@@ -4,8 +4,23 @@ class Geocoder extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleInput = this.handleInput.bind(this);
-    this.validateZipCode = this.validateZipCode.bind(this);
+    this.state = {
+      zipCode: props.zipCode,
+    };
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.zipCode === this.state.zipCode) {
+      return;
+    }
+
+    this.setState({
+      zipCode: props.zipCode,
+    });
+
+    if (props.zipCode && props.zipCode.length === 5) {
+      this.getLocationData(props.zipCode);
+    }
   }
 
   parseLocation(addressData) {
@@ -26,18 +41,9 @@ class Geocoder extends React.Component {
     return /^[0-9]{5}(?:-[0-9]{4})?$/.test(zipCode);
   }
 
-  handleInput(event) {
-    this.props.setZipCode(event.target.value);
-
-    if (
-      event.target.value.length < 5 ||
-      !this.validateZipCode(event.target.value)
-    ) {
-      return;
-    }
-
+  getLocationData = zipCode => {
     // TODO: Add more validation here
-    fetch(`/api/googlemaps/geocode/?address=${event.target.value}`)
+    fetch(`/api/googlemaps/geocode/?address=${zipCode}`)
       .then(res => res.json())
       .then(response => {
         console.log(response);
@@ -60,17 +66,34 @@ class Geocoder extends React.Component {
           prettyName: `${cityState.city}, ${cityState.state}`,
         });
       });
-  }
+  };
+
+  handleInput = event => {
+    this.props.setZipCode(event.target.value);
+
+    if (!event.target.value.length) {
+      this.props.clearForecasts();
+      return;
+    } else if (
+      event.target.value.length < 5 ||
+      !this.validateZipCode(event.target.value)
+    ) {
+      return;
+    }
+
+    this.getLocationData(event.target.value);
+  };
 
   render() {
-    const { zip } = this.props;
+    const { zipCode } = this.state;
 
     return (
       <div>
         <input
           type="text"
           maxLength="5"
-          value={zip}
+          placeholder="enter zip code..."
+          value={zipCode}
           onChange={this.handleInput}
         />
       </div>

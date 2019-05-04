@@ -6,6 +6,15 @@
   text-align: initial;
 }
 
+.hidden {
+  display: none;
+}
+
+.favorite {
+  color: red;
+  cursor: pointer;
+}
+
 .current-forecast--icon-info {
   display: flex;
 }

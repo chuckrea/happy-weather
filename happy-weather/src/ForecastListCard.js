@@ -23,8 +23,6 @@ class ForecastListCard extends React.Component {
       day: this.formatDay(this.props.forecast.time),
       active: props.activeForecast === props.forecast.time,
     };
-    this.activateCardForecast = this.activateCardForecast.bind(this);
-    console.log(props);
   }
 
   componentWillReceiveProps(props) {
@@ -39,12 +37,12 @@ class ForecastListCard extends React.Component {
     return dayMap[date.getDay()];
   }
 
-  activateCardForecast() {
+  activateCardForecast = () => {
     this.props.displayFullForecast({
       ...this.props.forecast,
       futureDay: this.state.day,
     });
-  }
+  };
 
   render() {
     const {

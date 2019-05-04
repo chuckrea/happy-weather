@@ -11,9 +11,28 @@ header {
   margin: 0 auto;
 }
 
+.inputs {
+  position: relative;
+  padding-bottom: 50px;
+}
+
 input {
   font-size: 1em;
   padding: 5px;
+}
+
+select {
+  width: 185px;
+  height: 30px;
+  padding: 5px;
+  margin-top: 1em;
+  font-size: 1em;
+
+  /* This is to eliminate jumpiness when the select box appears */
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
 }
 
 .centered-flex-column {

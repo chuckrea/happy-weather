@@ -7,6 +7,22 @@ import iconColorMap from './IconColorMap';
 import ReactAnimatedWeather from 'react-animated-weather';
 
 class CurrentForecast extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isFavorite: props.isFavorite,
+    };
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.isFavorite !== this.state.isFavorite) {
+      this.setState({
+        isFavorite: props.isFavorite,
+      });
+    }
+  }
+
   formatTimeInHours(date, returnFullTime) {
     const time = new Date(date * 1000);
     const timeArray = time.toLocaleTimeString().split(' ');
@@ -21,6 +37,24 @@ class CurrentForecast extends React.Component {
   capitalizeString(string) {
     return `${string[0].toUpperCase()}${string.slice(1)}`;
   }
+
+  toggleFavorite = () => {
+    const { isFavorite } = this.state;
+    const favoriteObject = {
+      name: this.props.location,
+      zip: this.props.zipCode,
+    };
+
+    if (isFavorite) {
+      this.props.removeFavorite(favoriteObject);
+    } else {
+      this.props.setFavorite(favoriteObject);
+    }
+
+    this.setState({
+      isFavorite: !isFavorite,
+    });
+  };
 
   render() {
     console.log('current', this.props);
@@ -77,7 +111,15 @@ class CurrentForecast extends React.Component {
           </div>
           <div className="centered-flex-column">
             <h3>
-              {futureDay ? futureDay : 'Currently'} in {location}
+              {futureDay ? futureDay : 'Currently'} in {location}{' '}
+              <span onClick={this.toggleFavorite} className="favorite">
+                <span className={`${this.state.isFavorite ? 'hidden' : ''}`}>
+                  &#9825;
+                </span>
+                <span className={`${!this.state.isFavorite ? 'hidden' : ''}`}>
+                  &#9829;
+                </span>
+              </span>
             </h3>
             {temperature && (
               <div className="current-forecast--temp">

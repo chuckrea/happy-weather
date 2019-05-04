@@ -3,6 +3,7 @@ import React from 'react';
 import './HappyWeather.css';
 
 import CurrentForecast from './CurrentForecast';
+import FavoriteLocations from './FavoriteLocations';
 import ForecastList from './ForecastList';
 import Geocoder from './Geocoder';
 
@@ -13,31 +14,78 @@ class HappyWeather extends React.Component {
     this.state = {
       location: '',
       coordinates: {},
-      currentForecast: {
-        summary: '',
-      },
+      currentForecast: {},
+      favorites: [],
       forecasts: [],
       showError: false,
-      zip: '',
+      zipCode: '',
     };
-
-    this.setZipCode = this.setZipCode.bind(this);
-    this.setCoordinates = this.setCoordinates.bind(this);
-    this.setCurrentForecastDisplay = this.setCurrentForecastDisplay.bind(this);
-    this.resetCurrentForecast = this.resetCurrentForecast.bind(this);
   }
 
-  setZipCode(zipCode) {
-    this.setState({ zip: zipCode });
+  componentWillMount() {
+    this.getFavorites();
   }
 
-  setCoordinates({ lat = '', lng = '', prettyName = '' }) {
+  getFavorites = () => {
+    const favorites = localStorage.getItem('weatherBotFavorites');
+
+    this.setState({
+      favorites: JSON.parse(favorites) || [],
+    });
+  };
+
+  setFavorite = favoriteObject => {
+    let favorites = JSON.parse(localStorage.getItem('weatherBotFavorites'));
+
+    // if this location is already in favorites, let's bail
+    if (
+      favorites &&
+      favorites.find(favorite => favorite.zip === favoriteObject.zip)
+    ) {
+      return;
+    } else if (favorites) {
+      // Otherwise if favorites exist on local storage, add this one
+      favorites.push(favoriteObject);
+      localStorage.setItem('weatherBotFavorites', JSON.stringify(favorites));
+    } else {
+      // If all else fails, make a new array and add it to local storage
+      favorites = [favoriteObject];
+      localStorage.setItem('weatherBotFavorites', JSON.stringify(favorites));
+    }
+
+    // Let's set state so the user can see their new faves
+    this.setState({
+      favorites,
+    });
+  };
+
+  removeFavorite = favoriteObject => {
+    const favorites = JSON.parse(localStorage.getItem('weatherBotFavorites'));
+
+    const newFavorites = favorites.filter(
+      favorite => favorite.zip !== favoriteObject.zip
+    );
+
+    if (!newFavorites.length) {
+      localStorage.removeItem('weatherBotFavorites');
+    } else {
+      localStorage.setItem('weatherBotFavorites', JSON.stringify(newFavorites));
+    }
+
+    this.setState({
+      favorites: newFavorites,
+    });
+  };
+
+  setZipCode = zipCode => {
+    this.setState({ zipCode: zipCode });
+  };
+
+  setCoordinates = ({ lat = '', lng = '', prettyName = '' }) => {
     if (!lat && !lng) {
       this.setState({
         showError: true,
-        currentForecast: {
-          summary: '',
-        },
+        currentForecast: {},
         forecasts: [],
       });
 
@@ -54,18 +102,31 @@ class HappyWeather extends React.Component {
     });
 
     this.getForecast();
-  }
+  };
 
-  setCurrentForecastDisplay(forecastData) {
+  setCurrentForecastDisplay = forecastData => {
     const updatedState = {
       currentForecast: forecastData,
     };
 
     this.setState(updatedState);
-  }
+  };
 
-  resetCurrentForecast() {
+  resetCurrentForecast = () => {
     this.setCurrentForecastDisplay(this.state.todayForecast);
+  };
+
+  clearForecasts = () => {
+    this.setState({
+      currentForecast: {},
+      forecasts: [],
+    });
+  };
+
+  isLocationFavorite() {
+    return this.state.favorites.find(
+      favorite => this.state.zipCode === favorite.zip
+    );
   }
 
   getForecast() {
@@ -99,34 +160,53 @@ class HappyWeather extends React.Component {
   render() {
     const {
       currentForecast,
+      favorites,
       forecasts,
       hourlyData,
       location,
       showError,
-      zip,
+      zipCode,
     } = this.state;
+
+    const hasFavorites = favorites.length > 0;
 
     return (
       <div>
         <header>
           <h1>SuperHappyWeatherBot 90210</h1>
         </header>
-        <Geocoder
-          setZipCode={this.setZipCode}
-          setCoordinates={this.setCoordinates}
-          zipCode={zip}
-        />
+        <div className="inputs">
+          <Geocoder
+            clearForecasts={this.clearForecasts}
+            setZipCode={this.setZipCode}
+            setCoordinates={this.setCoordinates}
+            zipCode={zipCode}
+          />
+
+          {hasFavorites && (
+            <FavoriteLocations
+              favorites={favorites}
+              zipCode={zipCode}
+              setZipCode={this.setZipCode}
+            />
+          )}
+        </div>
+
         {showError && <p>Seriously, use a valid zip code</p>}
         <div className="forecast-body">
-          {currentForecast.summary && (
+          {zipCode.length === 5 && currentForecast.summary && (
             <CurrentForecast
               location={location}
+              zipCode={zipCode}
+              isFavorite={this.isLocationFavorite()}
+              setFavorite={this.setFavorite}
+              removeFavorite={this.removeFavorite}
               {...currentForecast}
               hourly={hourlyData}
               resetForecast={this.resetCurrentForecast}
             />
           )}
-          {forecasts.length > 0 && (
+          {zipCode.length === 5 && forecasts.length > 0 && (
             <ForecastList
               forecasts={forecasts}
               displayFullForecast={this.setCurrentForecastDisplay}
