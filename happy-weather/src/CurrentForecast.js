@@ -7,11 +7,6 @@ import iconColorMap from './IconColorMap';
 import ReactAnimatedWeather from 'react-animated-weather';
 
 class CurrentForecast extends React.Component {
-  constructor(props) {
-    super(props);
-    console.log(this.props.hourly);
-  }
-
   formatTimeInHours(date, returnFullTime) {
     const time = new Date(date * 1000);
     const timeArray = time.toLocaleTimeString().split(' ');
@@ -23,13 +18,17 @@ class CurrentForecast extends React.Component {
     return `${hour} ${timeArray.pop()}`;
   }
 
+  capitalizeString(string) {
+    return `${string[0].toUpperCase()}${string.slice(1)}`;
+  }
+
   render() {
     console.log('current', this.props);
     const {
       icon,
-      time,
       futureDay,
       location,
+      hourly,
       temperature,
       temperatureHigh,
       temperatureHighTime,
@@ -54,7 +53,7 @@ class CurrentForecast extends React.Component {
     const formattedMaxGustsTime = this.formatTimeInHours(windGustTime);
     const precipPercentage = Math.round(precipProbability * 100);
 
-    const hourlyForecasts = this.props.hourly.map((forecast, index) => (
+    const hourlyForecasts = hourly.map((forecast, index) => (
       <HourlyForecast key={index} {...forecast} />
     ));
 
@@ -77,9 +76,9 @@ class CurrentForecast extends React.Component {
             />
           </div>
           <div className="centered-flex-column">
-            <h4>
+            <h3>
               {futureDay ? futureDay : 'Currently'} in {location}
-            </h4>
+            </h3>
             {temperature && (
               <div className="current-forecast--temp">
                 {Math.round(temperature)}&deg;
@@ -88,11 +87,12 @@ class CurrentForecast extends React.Component {
             <div className="current-forecast--summary">{summary}</div>
             <div className="current-forecast--temp-range">
               <p>
-                High {Math.round(temperatureHigh)}&deg; ({formattedHighTempTime}
-                )
+                <span>High {Math.round(temperatureHigh)}&deg;</span> (
+                {formattedHighTempTime})
               </p>
               <p>
-                Low {Math.round(temperatureLow)}&deg; ({formattedLowTempTime})
+                <span>Low {Math.round(temperatureLow)}&deg;</span> (
+                {formattedLowTempTime})
               </p>
             </div>
           </div>
@@ -107,7 +107,8 @@ class CurrentForecast extends React.Component {
                 </p>
               </div>
               <div>
-                {precipType} will be the worst around {formattedMaxPrecipTime}
+                {this.capitalizeString(precipType)} will peak around{' '}
+                {formattedMaxPrecipTime}
               </div>
             </div>
           )}

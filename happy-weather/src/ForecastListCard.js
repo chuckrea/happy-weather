@@ -40,34 +40,16 @@ class ForecastListCard extends React.Component {
   }
 
   activateCardForecast() {
-    // this.setState({
-    //   active: true
-    // });
-
     this.props.displayFullForecast({
       ...this.props.forecast,
       futureDay: this.state.day,
     });
   }
 
-  getGiphy() {
-    fetch(`/api/giphy/?search=${this.props.icon}`)
-      .then(res => res.json())
-      .then(giphy => {
-        console.log(giphy);
-        this.setState({
-          gifSrc: giphy.data[0].images.fixed_height.webp,
-        });
-      });
-  }
-
   render() {
     const {
-      time,
       icon,
       summary,
-      precipProbability,
-      precipType,
       temperatureHigh,
       temperatureLow,
     } = this.props.forecast;
@@ -79,7 +61,7 @@ class ForecastListCard extends React.Component {
         className={`forecast-card ${this.state.active ? 'active' : ''}`}
         onClick={this.activateCardForecast}
       >
-        <h5>{this.state.day}</h5>
+        <h4>{this.state.day}</h4>
         <div>
           <ReactAnimatedWeather
             icon={formattedIcon}

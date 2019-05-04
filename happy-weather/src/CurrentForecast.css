@@ -17,6 +17,17 @@
 .current-forecast > div:not(:first-of-type) {
   margin-left: 2rem;
 }
+.current-forecast--temp {
+  font-size: 50px;
+}
+
+.current-forecast--summary {
+  font-style: italic;
+}
+
+.current-forecast--temp-range span {
+  font-size: 25px;
+}
 
 .current-forecast--back-button {
   position: absolute;

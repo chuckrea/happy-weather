@@ -43,13 +43,22 @@ class Geocoder extends React.Component {
         console.log(response);
         console.log(response.results[0]);
 
+        if (response.status === 'ZERO_RESULTS') {
+          this.props.setCoordinates({});
+          return;
+        }
+
         const { geometry: { location: locationData = {} } = {} } =
           response.results[0] || {};
+
         const cityState = this.parseLocation(
           response.results[0].address_components
         );
-        locationData.prettyName = `${cityState.city}, ${cityState.state}`;
-        this.props.setCoordinates(locationData);
+
+        this.props.setCoordinates({
+          ...locationData,
+          prettyName: `${cityState.city}, ${cityState.state}`,
+        });
       });
   }
 
@@ -58,8 +67,12 @@ class Geocoder extends React.Component {
 
     return (
       <div>
-        <header>Happy Weather</header>
-        <input type="text" value={zip} onChange={this.handleInput} />
+        <input
+          type="text"
+          maxLength="5"
+          value={zip}
+          onChange={this.handleInput}
+        />
       </div>
     );
   }

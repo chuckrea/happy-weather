@@ -17,6 +17,7 @@ class HappyWeather extends React.Component {
         summary: '',
       },
       forecasts: [],
+      showError: false,
       zip: '',
     };
 
@@ -31,12 +32,25 @@ class HappyWeather extends React.Component {
   }
 
   setCoordinates({ lat = '', lng = '', prettyName = '' }) {
+    if (!lat && !lng) {
+      this.setState({
+        showError: true,
+        currentForecast: {
+          summary: '',
+        },
+        forecasts: [],
+      });
+
+      return;
+    }
+
     this.setState({
       location: prettyName,
       coordinates: {
         lat,
         lng,
       },
+      showError: false,
     });
 
     this.getForecast();
@@ -88,16 +102,21 @@ class HappyWeather extends React.Component {
       forecasts,
       hourlyData,
       location,
+      showError,
       zip,
     } = this.state;
 
     return (
       <div>
+        <header>
+          <h1>SuperHappyWeatherBot 90210</h1>
+        </header>
         <Geocoder
           setZipCode={this.setZipCode}
           setCoordinates={this.setCoordinates}
           zipCode={zip}
         />
+        {showError && <p>Seriously, use a valid zip code</p>}
         <div className="forecast-body">
           {currentForecast.summary && (
             <CurrentForecast

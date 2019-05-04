@@ -1,8 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Gugi|Lato:400,600');
+
+header {
+  font-family: 'Gugi', sans-serif;
+}
 .forecast-body {
   display: flex;
   flex-direction: column;
+  font-family: 'Lato', sans-serif;
   width: 80%;
   margin: 0 auto;
+}
+
+input {
+  font-size: 1em;
+  padding: 5px;
 }
 
 .centered-flex-column {
