@@ -20,7 +20,7 @@ describe('CurrentForecast Component', () => {
       temperatureLowTime: 1557201600,
       precipIntensityMaxTime: 1557201600,
       precipProbability: 0.86,
-      precipType: 1557201600,
+      precipType: 'rain',
       summary: 'Rainy',
       windGust: 4.6,
       windGustTime: 1557201600,

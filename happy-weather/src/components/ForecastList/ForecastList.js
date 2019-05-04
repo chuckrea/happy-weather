@@ -2,7 +2,7 @@ import React from 'react';
 
 import './ForecastList.css';
 
-import ForecastListCard from './ForecastListCard';
+import ForecastListCard from '../ForecastListCard/ForecastListCard';
 
 function ForecastList(props) {
   const { forecasts } = props;

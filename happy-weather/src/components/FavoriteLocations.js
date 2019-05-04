@@ -10,9 +10,6 @@ class FavoriteLocations extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log('favorite props', props);
-    console.log('favorite state', this.state);
-
     if (!props.zipCode) {
       this.setState({
         value: '',
@@ -28,7 +25,8 @@ class FavoriteLocations extends React.Component {
     this.setState({
       value: event.target.value,
     });
-
+    console.log('handling change');
+    this.props.clearForecasts();
     this.props.setZipCode(event.target.value);
   };
 

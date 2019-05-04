@@ -2,8 +2,8 @@ import React from 'react';
 
 import './CurrentForecast.css';
 
-import HourlyForecast from './HourlyForecast';
-import iconColorMap from './IconColorMap';
+import HourlyForecast from '../HourlyForecast';
+import iconColorMap from '../../IconColorMap';
 import ReactAnimatedWeather from 'react-animated-weather';
 
 class CurrentForecast extends React.Component {

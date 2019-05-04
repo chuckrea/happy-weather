@@ -19,6 +19,7 @@ class Geocoder extends React.Component {
     });
 
     if (props.zipCode && props.zipCode.length === 5) {
+      console.log('getting location data in will recieve props');
       this.getLocationData(props.zipCode);
     }
   }
@@ -69,21 +70,14 @@ class Geocoder extends React.Component {
   };
 
   handleInput = event => {
-    this.props.setZipCode(event.target.value);
-
     if (!event.target.value.length) {
       this.props.clearForecasts();
-      return;
-    } else if (
-      event.target.value.length < 5 ||
-      !this.validateZipCode(event.target.value)
-    ) {
-      return;
     }
 
-    this.getLocationData(event.target.value);
+    this.props.setZipCode(event.target.value);
   };
 
+  // TODO: Make the button do the submit??
   render() {
     const { zipCode } = this.state;
 
@@ -96,6 +90,7 @@ class Geocoder extends React.Component {
           value={zipCode}
           onChange={this.handleInput}
         />
+        {/* <button>Get me my weather!</button> */}
       </div>
     );
   }

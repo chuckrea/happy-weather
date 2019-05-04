@@ -2,7 +2,7 @@ import React from 'react';
 
 import './ForecastListCard.css';
 
-import iconColorMap from './IconColorMap';
+import iconColorMap from '../../IconColorMap';
 import ReactAnimatedWeather from 'react-animated-weather';
 
 const dayMap = {

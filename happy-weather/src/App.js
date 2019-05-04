@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import HappyWeather from './HappyWeather';
+import HappyWeather from './components/HappyWeather/HappyWeather';
 
 function App() {
   return (
