@@ -2,7 +2,12 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Please, please, please run `npm install` before starting the app =)
+To run the project, please take the following steps:
+
+1. Clone this repo `git clone https://github.com/chuckrea/happy-weather.git`
+2. cd into the project folder `cd happy-weather/happy-weather`
+3. Install all dependencies `npm install`
+4. Fire it up! `npm start`
 
 ## Available Scripts
 
