@@ -146,7 +146,6 @@ class HappyWeather extends React.Component {
 
   /**
    * function setCurrentForecastDisplay
-   *
    * Updates local state to display full forecast data
    *
    * @memberof HappyWeather
@@ -161,7 +160,6 @@ class HappyWeather extends React.Component {
 
   /**
    * function resetCurrentForecast
-   *
    * Resets current forecast to the actual, CURRENT forecast
    * (as opposed to a future day forecast)
    *
@@ -173,7 +171,6 @@ class HappyWeather extends React.Component {
 
   /**
    * function clearForecasts
-   *
    * Blanks out all forecast displays
    *
    * @memberof HappyWeather
@@ -187,7 +184,7 @@ class HappyWeather extends React.Component {
 
   /**
    * function isLocationFavorite
-   * determines if the current location is in
+   * Determines if the current location is in
    * the user's favorites
    *
    * @returns boolean
