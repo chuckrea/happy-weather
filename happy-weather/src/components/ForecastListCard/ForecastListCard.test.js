@@ -27,4 +27,12 @@ describe('ForecastListCard Component', () => {
     ReactDOM.render(<ForecastListCard {...mockProps} />, div);
     ReactDOM.unmountComponentAtNode(div);
   });
+
+  describe('formatDay', () => {
+    it('should return the correct day as a string', () => {
+      const darkSkyDate = 1557201600;
+      const result = ForecastListCard.prototype.formatDay(darkSkyDate);
+      expect(result).toEqual('Tuesday');
+    });
+  });
 });

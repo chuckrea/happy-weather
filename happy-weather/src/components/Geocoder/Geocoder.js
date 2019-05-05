@@ -81,13 +81,13 @@ class Geocoder extends React.Component {
         const { geometry: { location: locationData = {} } = {} } =
           response.results[0] || {};
 
-        const cityState = this.parseLocation(
+        const { city = '', state = '' } = this.parseLocation(
           response.results[0].address_components
         );
 
         this.props.setCoordinates({
           ...locationData,
-          prettyName: `${cityState.city}, ${cityState.state}`,
+          prettyName: `${city}, ${state}`,
         });
       });
   };

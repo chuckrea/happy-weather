@@ -20,6 +20,10 @@ const iconColorMap = {
  * @returns {string} capitalized string, e.g. 'Tatooine'
  */
 function capitalizeString(string) {
+  if (!string) {
+    return '';
+  }
+
   return `${string[0].toUpperCase()}${string.slice(1)}`;
 }
 
