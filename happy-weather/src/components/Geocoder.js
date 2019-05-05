@@ -9,6 +9,8 @@ class Geocoder extends React.Component {
     };
   }
 
+  // TODO: This lifecycle hook will be deprecated with React v17
+  // Refactor with static getDerivedStateFromProps(props, state)
   componentWillReceiveProps(props) {
     if (props.zipCode === this.state.zipCode) {
       return;
@@ -19,11 +21,19 @@ class Geocoder extends React.Component {
     });
 
     if (props.zipCode && props.zipCode.length === 5) {
-      console.log('getting location data in will recieve props');
       this.getLocationData(props.zipCode);
     }
   }
 
+  /**
+   * function parseLocation
+   * Takes in GoogleMaps API data
+   * and returns an object with city/state
+   *
+   * @param {Array} addressData
+   * @returns {Object} {city: {String}, state: {String}}
+   * @memberof Geocoder
+   */
   parseLocation(addressData) {
     return addressData.reduce((newObj, currentData) => {
       if (currentData.types.indexOf('locality') > -1) {
@@ -38,18 +48,31 @@ class Geocoder extends React.Component {
     }, {});
   }
 
+  /**
+   * function validateZipCode
+   * Validates zip code
+   *
+   * @param {number | string} zipCode
+   * @returns boolean
+   * @memberof Geocoder
+   */
   validateZipCode(zipCode) {
     return /^[0-9]{5}(?:-[0-9]{4})?$/.test(zipCode);
   }
 
+  /**
+   * function getLocationData
+   * Calls GoogleMaps Geocoder API and
+   * passes coordinate information back
+   * to parent component
+   *
+   * @memberof Geocoder
+   */
   getLocationData = zipCode => {
     // TODO: Add more validation here
     fetch(`/api/googlemaps/geocode/?address=${zipCode}`)
       .then(res => res.json())
       .then(response => {
-        console.log(response);
-        console.log(response.results[0]);
-
         if (response.status === 'ZERO_RESULTS') {
           this.props.setCoordinates({});
           return;
@@ -69,6 +92,12 @@ class Geocoder extends React.Component {
       });
   };
 
+  /**
+   * function handleInput
+   * Event listener callback for zipcode input
+   *
+   * @memberof Geocoder
+   */
   handleInput = event => {
     if (!event.target.value.length) {
       this.props.clearForecasts();
@@ -77,7 +106,7 @@ class Geocoder extends React.Component {
     this.props.setZipCode(event.target.value);
   };
 
-  // TODO: Make the button do the submit??
+  // TODO: Make a button do the submit??
   render() {
     const { zipCode } = this.state;
 
@@ -90,7 +119,6 @@ class Geocoder extends React.Component {
           value={zipCode}
           onChange={this.handleInput}
         />
-        {/* <button>Get me my weather!</button> */}
       </div>
     );
   }

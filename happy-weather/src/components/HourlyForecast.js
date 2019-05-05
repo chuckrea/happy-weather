@@ -1,37 +1,26 @@
 import React from 'react';
 
 import ReactAnimatedWeather from 'react-animated-weather';
+import { formatTimeInHours } from '../utilities';
 
-class HourlyForecast extends React.Component {
-  getHourFromTime() {
-    const time = new Date(this.props.time * 1000);
-    const timeArray = time.toLocaleTimeString().split(' ');
-    const timeWithoutSeconds = timeArray[0].split(':').shift();
+function HourlyForecast(props) {
+  const { icon, summary } = props;
 
-    return `${timeWithoutSeconds} ${timeArray.pop()}`;
-  }
+  // ReactAnimatedWeather needs an icon string to be formatted
+  // with underscores instead of dashes
+  const formattedIcon = icon.replace(/-/g, '_').toUpperCase();
+  const formattedTime = formatTimeInHours(props.time);
 
-  render() {
-    const { icon, summary } = this.props;
-
-    const formattedIcon = icon.replace(/-/g, '_').toUpperCase();
-    const formattedTime = this.getHourFromTime();
-
-    return (
-      <div className="hourly-item">
-        <div>
-          <ReactAnimatedWeather
-            icon={formattedIcon}
-            size={30}
-            animate={false}
-          />
-        </div>
-        <p>
-          {formattedTime} {summary}
-        </p>
+  return (
+    <div className="hourly-item">
+      <div>
+        <ReactAnimatedWeather icon={formattedIcon} size={30} animate={false} />
       </div>
-    );
-  }
+      <p>
+        {formattedTime} {summary}
+      </p>
+    </div>
+  );
 }
 
 export default HourlyForecast;

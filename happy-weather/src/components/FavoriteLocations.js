@@ -9,6 +9,8 @@ class FavoriteLocations extends React.Component {
     };
   }
 
+  // TODO: This lifecycle hook will be deprecated with React v17
+  // Refactor with static getDerivedStateFromProps(props, state)
   componentWillReceiveProps(props) {
     if (!props.zipCode) {
       this.setState({
@@ -21,11 +23,17 @@ class FavoriteLocations extends React.Component {
     }
   }
 
+  /**
+   * function handleChange
+   * Event listener callback for location <select> element
+   *
+   * @memberof FavoriteLocations
+   */
   handleChange = event => {
     this.setState({
       value: event.target.value,
     });
-    console.log('handling change');
+
     this.props.clearForecasts();
     this.props.setZipCode(event.target.value);
   };

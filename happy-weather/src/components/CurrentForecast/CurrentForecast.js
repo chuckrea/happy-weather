@@ -3,7 +3,11 @@ import React from 'react';
 import './CurrentForecast.css';
 
 import HourlyForecast from '../HourlyForecast';
-import iconColorMap from '../../IconColorMap';
+import {
+  capitalizeString,
+  formatTimeInHours,
+  iconColorMap,
+} from '../../utilities';
 import ReactAnimatedWeather from 'react-animated-weather';
 
 class CurrentForecast extends React.Component {
@@ -15,6 +19,8 @@ class CurrentForecast extends React.Component {
     };
   }
 
+  // TODO: This lifecycle hook will be deprecated with React v17
+  // Refactor with static getDerivedStateFromProps(props, state)
   componentWillReceiveProps(props) {
     if (props.isFavorite !== this.state.isFavorite) {
       this.setState({
@@ -23,21 +29,13 @@ class CurrentForecast extends React.Component {
     }
   }
 
-  formatTimeInHours(date, returnFullTime) {
-    const time = new Date(date * 1000);
-    const timeArray = time.toLocaleTimeString().split(' ');
-    const hourArray = timeArray[0].split(':');
-    const hour = returnFullTime
-      ? hourArray.slice(0, 2).join(':')
-      : hourArray.shift();
-
-    return `${hour} ${timeArray.pop()}`;
-  }
-
-  capitalizeString(string) {
-    return `${string[0].toUpperCase()}${string.slice(1)}`;
-  }
-
+  /**
+   * function toggleFavorite
+   *
+   * Adds/removes favorite based on user input
+   *
+   * @memberof CurrentForecast
+   */
   toggleFavorite = () => {
     const { isFavorite } = this.state;
     const favoriteObject = {
@@ -45,11 +43,9 @@ class CurrentForecast extends React.Component {
       zip: this.props.zipCode,
     };
 
-    if (isFavorite) {
-      this.props.removeFavorite(favoriteObject);
-    } else {
-      this.props.setFavorite(favoriteObject);
-    }
+    isFavorite
+      ? this.props.removeFavorite(favoriteObject)
+      : this.props.setFavorite(favoriteObject);
 
     this.setState({
       isFavorite: !isFavorite,
@@ -57,7 +53,6 @@ class CurrentForecast extends React.Component {
   };
 
   render() {
-    console.log('current', this.props);
     const {
       icon,
       futureDay,
@@ -78,13 +73,10 @@ class CurrentForecast extends React.Component {
     } = this.props;
 
     const formattedIcon = icon.replace(/-/g, '_').toUpperCase();
-    const formattedMaxPrecipTime = this.formatTimeInHours(
-      precipIntensityMaxTime,
-      true
-    );
-    const formattedHighTempTime = this.formatTimeInHours(temperatureHighTime);
-    const formattedLowTempTime = this.formatTimeInHours(temperatureLowTime);
-    const formattedMaxGustsTime = this.formatTimeInHours(windGustTime);
+    const formattedMaxPrecipTime = formatTimeInHours(precipIntensityMaxTime);
+    const formattedHighTempTime = formatTimeInHours(temperatureHighTime);
+    const formattedLowTempTime = formatTimeInHours(temperatureLowTime);
+    const formattedMaxGustsTime = formatTimeInHours(windGustTime);
     const precipPercentage = Math.round(precipProbability * 100);
 
     const hourlyForecasts = hourly.map((forecast, index) => (
@@ -149,7 +141,7 @@ class CurrentForecast extends React.Component {
                 </p>
               </div>
               <div>
-                {this.capitalizeString(precipType)} will peak around{' '}
+                {capitalizeString(precipType)} will peak around{' '}
                 {formattedMaxPrecipTime}
               </div>
             </div>
