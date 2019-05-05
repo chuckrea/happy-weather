@@ -11,7 +11,10 @@ class HappyWeather extends React.Component {
   constructor(props) {
     super(props);
 
+    // autoRefreshMinutes will determine how long to wait (in minutes)
+    // before refreshing the forecast
     this.state = {
+      autoRefreshMinutes: 5,
       location: '',
       coordinates: {},
       currentForecast: {},
@@ -102,6 +105,23 @@ class HappyWeather extends React.Component {
   };
 
   /**
+   * function setAutomaticRefresh
+   *
+   * Sets a timeout to auto-refresh the forecast
+   * after the number of minutes set in state.autoRefreshMinutes
+   *
+   * @returns  timeoutID (for clearTimeout purposes)
+   * @memberof HappyWeather
+   */
+  setAutomaticRefresh() {
+    if (this.state.autoRefreshTimeout) {
+      clearTimeout(this.state.autoRefreshTimeout);
+    }
+
+    return setTimeout(this.getForecast, this.state.autoRefreshMinutes * 60000);
+  }
+
+  /**
    * function setZipCode
    * updates zipCode in state
    *
@@ -138,6 +158,7 @@ class HappyWeather extends React.Component {
         lng,
       },
       showError: false,
+      autoRefreshTimeout: this.setAutomaticRefresh(),
     });
 
     // Let's get this weather party started!
@@ -205,7 +226,7 @@ class HappyWeather extends React.Component {
    *
    * @memberof HappyWeather
    */
-  getForecast() {
+  getForecast = () => {
     const {
       coordinates: { lat: latitude, lng: longitude },
     } = this.state;
@@ -230,7 +251,7 @@ class HappyWeather extends React.Component {
           hourlyData: forecast.hourly.data.slice(0, 5),
         });
       });
-  }
+  };
 
   render() {
     const {
