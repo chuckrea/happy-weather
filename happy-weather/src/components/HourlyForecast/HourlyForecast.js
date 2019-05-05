@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ReactAnimatedWeather from 'react-animated-weather';
-import { formatTimeInHours } from '../utilities';
+import { formatTimeInHours } from '../../utilities';
 
 function HourlyForecast(props) {
   const { icon, summary } = props;

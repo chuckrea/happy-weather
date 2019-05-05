@@ -3,9 +3,9 @@ import React from 'react';
 import './HappyWeather.css';
 
 import CurrentForecast from '../CurrentForecast/CurrentForecast';
-import FavoriteLocations from '../FavoriteLocations';
+import FavoriteLocations from '../FavoriteLocations/FavoriteLocations';
 import ForecastList from '../ForecastList/ForecastList';
-import Geocoder from '../Geocoder';
+import Geocoder from '../Geocoder/Geocoder';
 
 class HappyWeather extends React.Component {
   constructor(props) {

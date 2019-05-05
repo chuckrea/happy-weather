@@ -2,7 +2,7 @@ import React from 'react';
 
 import './CurrentForecast.css';
 
-import HourlyForecast from '../HourlyForecast';
+import HourlyForecast from '../HourlyForecast/HourlyForecast';
 import {
   capitalizeString,
   formatTimeInHours,
